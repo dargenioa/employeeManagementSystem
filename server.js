@@ -1,7 +1,6 @@
 const mysql = require("mysql");
 var inquirer = require("inquirer");
 const cTable = require('console.table');
-const { restoreDefaultPrompts } = require("inquirer");
 
 // console.table([
 //   {
@@ -29,9 +28,11 @@ connection.connect((err) => {
 });
 
 const startApplication = () => {
-  connection.query("SELECT * FROM department", function (err, res) {
+  connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
-  });
-}
+  console.log(res);
+  // console.table('role', [res]
+
+  // );
+});
+};
