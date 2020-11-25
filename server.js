@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 var inquirer = require("inquirer");
 const cTable = require('console.table');
+cTable.getTable
 
 // console.table([
 //   {
@@ -49,17 +50,17 @@ const startApplication = () => {
           viewAll();
           break;
 
-        //   case "View employees by deparment":
-        //     multiSearch();
-        //     break;
+        case "View employees by deparment":
+          viewDeparment();
+          break;
 
-        //   case "View employees by job role":
-        //     rangeSearch();
-        //     break;
+        case "View employees by job role":
+          viewRole();
+          break;
 
-        //   case "Add a new employee":
-        //     songSearch();
-        //     break;
+        case "Add a new employee":
+          addEmployee();
+          break;
 
         //   case "Add a new role":
         //     songAndAlbumSearch();
@@ -79,11 +80,31 @@ const startApplication = () => {
 };
 
 const viewAll = () => {
-  let query = "SELECT * FROM employee, department, role";
-  connection.query(query, function(err, res) {
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
+  connection.query(query, function (err, res) {
     console.log(res);
-
+    console.table(res)
   });
 
 }
 
+const viewDeparment = () => {
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY department.name;";
+  connection.query(query, function (err, res) {
+    console.log(res);
+    console.table(res)
+  });
+}
+
+const viewRole = () => {
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY role.title;";
+  connection.query(query, function (err, res) {
+    console.log(res);
+    console.table(res)
+  });
+}
+
+const addEmployee = () => {
+  
+}
+// Look up join, inner join, concat, console.table

@@ -15,7 +15,8 @@ id INT NOT NULL AUTO_INCREMENT,
 title VARCHAR(30),
 salary DECIMAL,
 department_id INT,
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+CONSTRAINT DEPTID FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE
 );
 
 CREATE TABLE employee(
@@ -24,7 +25,8 @@ first_name VARCHAR(30),
 last_name VARCHAR(30),
 role_id INT,
 manager_id VARCHAR(30),
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+CONSTRAINT ROLEID FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
 );
 
 SELECT * FROM department;
@@ -126,81 +128,80 @@ VALUES("VP, Professional Services", 185000 , 06);
 
 SELECT * FROM employee;
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Amanda", "D'Argenio", 01);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Michelle", "D'Argenio", 02);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Lisa", "D'Argenio", 03);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Justin", "Dujardin", 04);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Desi", "DiMaio", 05);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Melissa", "DiBartolo", 06);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Leanne", "Morici", 07);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Catherine", "Marino", 08);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Ronnie", "Altshuler", 09);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Julie", "Alex", 10);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Marco", "Lozito", 11);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Kasia", "Kern", 12);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Joseph", "Kern", 13);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Dave", "Chappelle", 14);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Mike", "Tyson", 15);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Joe", "Rogan", 16);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Aziz", "Ansari", 17);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Sebastian", "Maniscalco", 18);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Bill", "Burr", 19);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Conan", "O'Brien", 20);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Nicole", "Kidman", 21);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("John", "Lithgow", 22);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Jamie", "Fox", 23);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Eddie", "Murphy", 24);
 
-INSERT INTO employee(first_name, last_name, role_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Charlie", "Murphy", 25);
-
 
 
 
