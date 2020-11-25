@@ -80,7 +80,7 @@ const startApplication = () => {
 };
 
 const viewAll = () => {
-  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
   connection.query(query, function (err, res) {
     console.log(res);
     console.table(res)
@@ -89,7 +89,7 @@ const viewAll = () => {
 }
 
 const viewDeparment = () => {
-  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY department.name;";
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY department.name;";
   connection.query(query, function (err, res) {
     console.log(res);
     console.table(res)
@@ -97,7 +97,7 @@ const viewDeparment = () => {
 }
 
 const viewRole = () => {
-  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, manager_id FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY role.title;";
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY role.title;";
   connection.query(query, function (err, res) {
     console.log(res);
     console.table(res)
@@ -105,6 +105,57 @@ const viewRole = () => {
 }
 
 const addEmployee = () => {
-  
+  inquirer
+    .prompt([
+      {
+        name: "first_name",
+        type: "input",
+        message: "What is the employee's first name?"
+      },
+      {
+        name: "last_name",
+        type: "input",
+        message: "What is the employee's last name?"
+      },
+      {
+        name: "title",
+        type: "input",
+        message: "What is the employee's title?"
+      },
+
+      {
+        name: "salary",
+        type: "input",
+        message: "What is the employee's salary?"
+      },
+      {
+        name: "deparment",
+        type: "input",
+        message: "What is the employee's department?"
+      },
+      {
+        name: "manager",
+        type: "input",
+        message: "Who is the employee's manager? If none, leave blank."
+      }
+    ])
+    .then(function (answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: answer.first_name,
+          last_name: answer.last_name,
+          manager_id: answer.manager
+        },
+        function (err) {
+          if (err) throw err;
+          console.log("Your employee was created successfully!");
+          startApplication()
+        }
+      );
+    });
 }
+
+
 // Look up join, inner join, concat, console.table
