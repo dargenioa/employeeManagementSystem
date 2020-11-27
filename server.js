@@ -159,12 +159,45 @@ const addEmployee = () => {
     });
 };
 
-const updateEmployee = () => {
-  let query = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
-  connection.query(query, function (err, res) {
-    // console.log(res);
-    console.table(res)
-  });
 
-}
+const updateEmployee = () => {
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
+  connection.query(query, function (err, results) {
+    inquirer
+      .prompt([
+        {
+          name: "employee",
+          type: "list",
+          message: "Which employee would you like to select?",
+          choices: function () {
+            const choiceArray = [];
+            for (let i = 0; i < results.length; i++) {
+              choiceArray.push(`${results[i].first_name} ${results[i].last_name}`);
+            }
+            return choiceArray;
+          }
+        },
+        {
+          name: "section",
+          type: "list",
+          message: "Which section would you like to update?",
+          choices: [
+            "Title",
+            "Department",
+            "Salary",
+            "Manager"
+          ]
+        }
+      ]).then(function (answer) {
+        // get the information of the chosen item
+        let chosenItem;
+        for (let i = 0; i < results.length; i++) {
+          if (`${results[i].first_name} ${results[i].last_name}` === answer.choice) {
+            chosenItem = results[i];
+            console.log(chosenItem);
+          }
+        }
+      });
+  });
+};
 
