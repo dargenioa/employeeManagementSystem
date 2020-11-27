@@ -1,18 +1,6 @@
 const mysql = require("mysql");
-var inquirer = require("inquirer");
-const cTable = require('console.table');
-cTable.getTable
-
-// console.table([
-//   {
-//     name: 'foo',
-//     age: 10
-//   }, {
-//     name: 'bar',
-//     age: 20
-//   }
-// ]);
-
+const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -39,9 +27,9 @@ const startApplication = () => {
         "View employees by deparment",
         "View employees by job role",
         "Add a new employee",
-        "Add a new role",
-        "Add a new department",
-        "Update an existing employee"]
+        "Update an existing employee",
+        "Remove employee"
+      ]
     })
     .then(function (answer) {
       let choice = answer.viewAddChange;
@@ -62,27 +50,23 @@ const startApplication = () => {
           addEmployee();
           break;
 
-        //   case "Add a new role":
-        //     songAndAlbumSearch();
-        //     break;
+        case "Update an existing employee":
+          updateEmployee();
+          break;
 
-        //   case "Add a new department":
-        //     songAndAlbumSearch();
-        //     break;
+        case "Remove employee":
+          removeEmployee();
+          break;
 
-        //   case "Update an existing employee":
-        //     songAndAlbumSearch();
-        //     break;
-        //   // }
-        // });
-      };
+      }
+
     });
 };
 
 const viewAll = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
   connection.query(query, function (err, res) {
-    console.log(res);
+    // console.log(res);
     console.table(res)
   });
 
@@ -120,9 +104,15 @@ const addEmployee = () => {
       {
         name: "title",
         type: "input",
-        message: "What is the employee's title?"
-      },
+        message: "What is the employee's role id"
 
+      },
+      {
+        name: "title",
+        type: "input",
+        message: "Who is the employee's manager?"
+
+      },
       {
         name: "salary",
         type: "input",
@@ -136,26 +126,45 @@ const addEmployee = () => {
       {
         name: "manager",
         type: "input",
-        message: "Who is the employee's manager? If none, leave blank."
+        message: "Who is the employee's manager?"
       }
     ])
     .then(function (answer) {
-      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO department SET ? ",
+        {
+          name: answer.name,
+        },
+      );
+      connection.query(
+        "INSERT INTO role SET ? ",
+        {
+          title: answer.title,
+          salary: answer.salary,
+
+        },
+      );
       connection.query(
         "INSERT INTO employee SET ?",
         {
           first_name: answer.first_name,
           last_name: answer.last_name,
-          manager_id: answer.manager
         },
         function (err) {
           if (err) throw err;
           console.log("Your employee was created successfully!");
-          startApplication()
+          startApplication();
         }
       );
     });
+};
+
+const updateEmployee = () => {
+  let query = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
+  connection.query(query, function (err, res) {
+    // console.log(res);
+    console.table(res)
+  });
+
 }
 
-
-// Look up join, inner join, concat, console.table
