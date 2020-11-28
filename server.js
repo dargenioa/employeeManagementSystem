@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
+const roleId = [];
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -14,6 +15,7 @@ connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   startApplication();
+  updateRole();
 });
 
 const startApplication = () => {
@@ -63,12 +65,19 @@ const startApplication = () => {
     });
 };
 
-// const viewEmployees = () => {
-//   connection.query("SELECT * FROM employee", function (err, res) {
-//     // console.log(res);
-//     console.table(res)
-//   });
-// }
+const viewEmployees = () => {
+  connection.query("SELECT * FROM employee", function (err, res) {
+    // console.log(res);
+    console.table(res)
+  });
+}
+
+const removeEmployee = () => {
+  connection.query("DELETE FROM employee WHERE id=?", [62], function (err, res) {
+    // console.log(res);
+    console.table(res)
+  });
+}
 
 const viewAll = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
@@ -94,21 +103,20 @@ const viewRole = () => {
     console.table(res)
   });
 }
-const roleId = [];
-function updateRole() {
-  connection.query("SELECT * FROM role", function (err, res) {
-    if (err) throw err
 
-    console.log(res);
-      for (let i = 0; i < res.length; i++) {
-        roleId.push(res[i].id);
-      }
-    })
-    console.log(roleId);
-  };
+const updateRole = () => {
+  connection.query("SELECT id FROM employee", function (err, res) {
+    const roleId = [];
+  if (err) throw err
+  for (let i = 0; i < res.length; i++) {
+    let e_id = res[i];
+    roleId.push(e_id);
+  }
+});
+};
 
-const addEmployee = () => {
-  inquirer
+const addEmployee = async () => {
+ inquirer
     .prompt([
       {
         name: "first_name",
@@ -123,23 +131,18 @@ const addEmployee = () => {
       {
         name: "title",
         type: "input",
-        message: "What is the employee's role?"
-      },
-      {
-        name: "salary",
-        type: "input",
-        message: "What is the employee's salary?"
+        message: "What is the employee's role id?"
       },
       {
         name: "department",
         type: "input",
-        message: "What is the employee's department id?"
+        message: "What is the employee's department id"
       },
       {
         name: "manager",
         type: "input",
-        message: "Who is the employee's manager?"
-      }
+        message: "Who is the employee's manager"
+      },
     ])
     .then(function (answer) {
       connection.query(
@@ -162,7 +165,8 @@ const addEmployee = () => {
         {
           first_name: answer.first_name,
           last_name: answer.last_name,
-          // role_id: 
+          role_id: answer.title,
+          manager_id: answer.manager
 
         },
         function (err) {
@@ -172,7 +176,7 @@ const addEmployee = () => {
       );
       viewAll();
     });
-};
+  };
 
 
 const updateEmployee = () => {
