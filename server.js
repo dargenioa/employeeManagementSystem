@@ -15,7 +15,6 @@ connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   startApplication();
-  updateRole();
 });
 
 const startApplication = () => {
@@ -37,7 +36,7 @@ const startApplication = () => {
       let choice = answer.viewAddChange;
       switch (choice) {
         case "View all employees":
-          updateRole();
+          viewAll();
           break;
 
         case "View employees by deparment":
@@ -65,12 +64,12 @@ const startApplication = () => {
     });
 };
 
-const viewEmployees = () => {
-  connection.query("SELECT * FROM employee", function (err, res) {
-    // console.log(res);
-    console.table(res)
-  });
-}
+// const viewEmployees = () => {
+//   connection.query("SELECT * FROM employee", function (err, res) {
+//     // console.log(res);
+//     console.table(res)
+//   });
+// }
 
 const removeEmployee = () => {
   connection.query("DELETE FROM employee WHERE id=?", [62], function (err, res) {
@@ -104,19 +103,19 @@ const viewRole = () => {
   });
 }
 
-const updateRole = () => {
-  connection.query("SELECT id FROM employee", function (err, res) {
-    const roleId = [];
-  if (err) throw err
-  for (let i = 0; i < res.length; i++) {
-    let e_id = res[i];
-    roleId.push(e_id);
-  }
-});
-};
+// const updateRole = () => {
+//   connection.query("SELECT id FROM employee", function (err, res) {
+//     const roleId = [];
+//     if (err) throw err
+//     for (let i = 0; i < res.length; i++) {
+//       let e_id = res[i];
+//       roleId.push(e_id);
+//     }
+//   });
+// };
 
 const addEmployee = async () => {
- inquirer
+  inquirer
     .prompt([
       {
         name: "first_name",
@@ -176,46 +175,33 @@ const addEmployee = async () => {
       );
       viewAll();
     });
-  };
-
+};
 
 const updateEmployee = () => {
-  let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
-  connection.query(query, function (err, results) {
+  connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function (err, res) {
     inquirer
       .prompt([
         {
-          name: "id",
-          type: "list",
-          message: "What is the employee's role.id",
-          choices: function () {
-            const choiceArray = [];
-            for (let i = 0; i < results.length; i++) {
-              choiceArray.push(`${results[i].id}`);
-            }
-            return choiceArray;
-          }
+          name: "first_name",
+          type: "input",
+          message: "What is the employee's first_name",
         },
         {
-          name: "role",
+          name: "last_name",
           type: "input",
-          message: "What is the new role?",
+          message: "What is the employee's last_name",
+        },
+        {
+          name: "role_id",
+          type: "input",
+          message: "What is the new role id?",
         },
       ]).then(function (answer) {
-        // console.log({
-        // first_name: answer.first,
-        // last_name: answer.last,
-        // title: answer.role
-        // });
-        connection.query("UPDATE employee SET role.title = ? WHERE ?;"
+        connection.query("UPDATE employee SET WHERE ?;"
         [
           {
-            title: answer.role
-          }
-          ,
-          {
-            id: answer.id
-
+            first_name: answer.first_name,
+            last_name: answer.last_name
           }
         ],
           function (error) {
