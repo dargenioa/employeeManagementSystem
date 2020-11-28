@@ -87,6 +87,16 @@ const viewRole = () => {
     console.table(res)
   });
 }
+const roleArray = [];
+function updateRole() {
+  connection.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      roleArray.push(res[i].title);
+    }
+  })
+  return roleArray;
+}
 
 const addEmployee = () => {
   inquirer
@@ -103,15 +113,9 @@ const addEmployee = () => {
       },
       {
         name: "title",
-        type: "input",
-        message: "What is the employee's role id"
-
-      },
-      {
-        name: "title",
-        type: "input",
-        message: "Who is the employee's manager?"
-
+        type: "list",
+        choices: updateRole(),
+        message: "What is the employee's role?"
       },
       {
         name: "salary",
@@ -133,7 +137,7 @@ const addEmployee = () => {
       connection.query(
         "INSERT INTO department SET ? ",
         {
-          name: answer.name,
+          name: answer.department,
         },
       );
       connection.query(
@@ -153,9 +157,9 @@ const addEmployee = () => {
         function (err) {
           if (err) throw err;
           console.log("Your employee was created successfully!");
-          startApplication();
         }
       );
+      viewAll();
     });
 };
 
@@ -178,25 +182,27 @@ const updateEmployee = () => {
           }
         },
         {
-          name: "section",
+          name: "role",
           type: "list",
-          message: "Which section would you like to update?",
-          choices: [
-            "Title",
-            "Department",
-            "Salary",
-            "Manager"
-          ]
-        }
+          choices: updateRole(),
+          message: "Select the employee's new role.",
+        },
       ]).then(function (answer) {
-        // get the information of the chosen item
-        let chosenItem;
-        for (let i = 0; i < results.length; i++) {
-          if (`${results[i].first_name} ${results[i].last_name}` === answer.choice) {
-            chosenItem = results[i];
-            console.log(chosenItem);
-          }
-        }
+        let newRoleId = updateRole().indexOf(answer.role);
+        connection.query("UPDATE employee SET ? WHERE ?", function (err, results) {
+          [
+            {
+              name: answer.employee
+            },
+            {
+              id: newRoleId
+            }
+          ],
+            function (error) {
+              if (error) throw err;
+              console.log("Employee updated succesfully");
+            }
+        });
       });
   });
 };
