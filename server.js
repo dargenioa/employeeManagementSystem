@@ -35,7 +35,7 @@ const startApplication = () => {
       let choice = answer.viewAddChange;
       switch (choice) {
         case "View all employees":
-          viewAll();
+          updateRole();
           break;
 
         case "View employees by deparment":
@@ -63,6 +63,13 @@ const startApplication = () => {
     });
 };
 
+// const viewEmployees = () => {
+//   connection.query("SELECT * FROM employee", function (err, res) {
+//     // console.log(res);
+//     console.table(res)
+//   });
+// }
+
 const viewAll = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
   connection.query(query, function (err, res) {
@@ -87,16 +94,18 @@ const viewRole = () => {
     console.table(res)
   });
 }
-const roleArray = [];
+const roleId = [];
 function updateRole() {
   connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err
-    for (var i = 0; i < res.length; i++) {
-      roleArray.push(res[i].title);
-    }
-  })
-  return roleArray;
-}
+
+    console.log(res);
+      for (let i = 0; i < res.length; i++) {
+        roleId.push(res[i].id);
+      }
+    })
+    console.log(roleId);
+  };
 
 const addEmployee = () => {
   inquirer
@@ -113,8 +122,7 @@ const addEmployee = () => {
       },
       {
         name: "title",
-        type: "list",
-        choices: updateRole(),
+        type: "input",
         message: "What is the employee's role?"
       },
       {
@@ -123,9 +131,9 @@ const addEmployee = () => {
         message: "What is the employee's salary?"
       },
       {
-        name: "deparment",
+        name: "department",
         type: "input",
-        message: "What is the employee's department?"
+        message: "What is the employee's department id?"
       },
       {
         name: "manager",
@@ -145,6 +153,7 @@ const addEmployee = () => {
         {
           title: answer.title,
           salary: answer.salary,
+          department_id: answer.department
 
         },
       );
@@ -153,6 +162,8 @@ const addEmployee = () => {
         {
           first_name: answer.first_name,
           last_name: answer.last_name,
+          // role_id: 
+
         },
         function (err) {
           if (err) throw err;
@@ -170,39 +181,44 @@ const updateEmployee = () => {
     inquirer
       .prompt([
         {
-          name: "employee",
+          name: "id",
           type: "list",
-          message: "Which employee would you like to select?",
+          message: "What is the employee's role.id",
           choices: function () {
             const choiceArray = [];
             for (let i = 0; i < results.length; i++) {
-              choiceArray.push(`${results[i].first_name} ${results[i].last_name}`);
+              choiceArray.push(`${results[i].id}`);
             }
             return choiceArray;
           }
         },
         {
           name: "role",
-          type: "list",
-          choices: updateRole(),
-          message: "Select the employee's new role.",
+          type: "input",
+          message: "What is the new role?",
         },
       ]).then(function (answer) {
-        let newRoleId = updateRole().indexOf(answer.role);
-        connection.query("UPDATE employee SET ? WHERE ?", function (err, results) {
-          [
-            {
-              name: answer.employee
-            },
-            {
-              id: newRoleId
-            }
-          ],
-            function (error) {
-              if (error) throw err;
-              console.log("Employee updated succesfully");
-            }
-        });
+        // console.log({
+        // first_name: answer.first,
+        // last_name: answer.last,
+        // title: answer.role
+        // });
+        connection.query("UPDATE employee SET role.title = ? WHERE ?;"
+        [
+          {
+            title: answer.role
+          }
+          ,
+          {
+            id: answer.id
+
+          }
+        ],
+          function (error) {
+            if (error) throw err;
+            console.log("Employee updated succesfully");
+          }
+        );
       });
   });
 };
