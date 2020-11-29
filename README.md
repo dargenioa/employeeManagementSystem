@@ -15,7 +15,7 @@
 
   ## Video Demo
 
-  ![](./public/assets/images/employeeManagementSystem.gif)
+  ![](./public/assets/images/employeeManagmentSystem.gif)
 
 
   ## Installation
