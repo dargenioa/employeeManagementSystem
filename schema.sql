@@ -129,16 +129,16 @@ VALUES("VP, Professional Services", 185000 , 06);
 SELECT * FROM employee;
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Amanda", "D'Argenio", 01);
+VALUES("Amanda", "D'Argenio", 01, "Kathy Clark");
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Michelle", "D'Argenio", 02);
+VALUES("Michelle", "Mybell", 02, "Amanda D'Argenio");
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Lisa", "D'Argenio", 03);
+VALUES("Lisa", "Piza", 03, "Amanda D'Argenio");
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Justin", "Dujardin", 04);
+VALUES("Justin", "Dujardin", 04, "Amanda D'Argenio");
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Desi", "DiMaio", 05);
@@ -202,8 +202,6 @@ VALUES("Eddie", "Murphy", 24);
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Charlie", "Murphy", 25);
-
-
 
 
 

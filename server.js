@@ -114,7 +114,7 @@ const viewRole = () => {
 //   });
 // };
 
-const addEmployee = async () => {
+const addEmployee = () => {
   inquirer
     .prompt([
       {
@@ -134,7 +134,7 @@ const addEmployee = async () => {
       },
       {
         name: "department",
-        type: "input",
+        type: "list",
         message: "What is the employee's department id"
       },
       {
@@ -178,38 +178,66 @@ const addEmployee = async () => {
 };
 
 const updateEmployee = () => {
-  connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function (err, res) {
+  connection.query("SELECT * FROM employee;", function (err, results) {
     inquirer
       .prompt([
         {
           name: "first_name",
-          type: "input",
-          message: "What is the employee's first_name",
+          type: "list",
+          choices: function () {
+            let firstArray = [];
+            for (let i = 0; i < results.length; i++) {
+              firstArray.push(results[i].first_name);
+            }
+
+            return firstArray;
+          },
+          message: "What is the employee's first name?",
         },
+        // {
+        //   name: "last_name",
+        //   type: "list",
+        //   choices: function () {
+        //     let lastArray = [];
+        //     for (let i = 0; i < results.length; i++) {
+        //     lastArray.push(results[i].last_name);
+        //     }
+        //     return lastArray;
+        //   },         
+        //   message: "What is the employee's last_name",
+        // },
         {
-          name: "last_name",
-          type: "input",
-          message: "What is the employee's last_name",
-        },
-        {
-          name: "role_id",
+          name: "new_role",
           type: "input",
           message: "What is the new role id?",
         },
       ]).then(function (answer) {
-        connection.query("UPDATE employee SET WHERE ?;"
-        [
-          {
-            first_name: answer.first_name,
-            last_name: answer.last_name
+        let chosenEmployee;
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].first_name === answer.first_name) {
+            chosenEmployee = results[i];
           }
-        ],
+        }
+        // console.log(answer)
+        connection.query("UPDATE employee SET ? WHERE ?;",
+          [{
+
+            role_id: answer.new_role,
+
+          },
+
+          {
+
+            id: chosenEmployee.id,
+
+          }],
           function (error) {
             if (error) throw err;
             console.log("Employee updated succesfully");
-          }
-        );
+          });
+          viewAll();
       });
   });
 };
+
 
