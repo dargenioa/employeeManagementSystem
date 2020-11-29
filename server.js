@@ -71,12 +71,12 @@ const startApplication = () => {
 //   });
 // }
 
-const removeEmployee = () => {
-  connection.query("DELETE FROM employee WHERE id=?", [62], function (err, res) {
-    // console.log(res);
-    console.table(res)
-  });
-}
+// const removeEmployee = () => {
+//   connection.query("DELETE FROM employee WHERE id=?", [62], function (err, res) {
+//     // console.log(res);
+//     console.table(res)
+//   });
+// }
 
 const viewAll = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id;";
@@ -194,18 +194,6 @@ const updateEmployee = () => {
           },
           message: "What is the employee's first name?",
         },
-        // {
-        //   name: "last_name",
-        //   type: "list",
-        //   choices: function () {
-        //     let lastArray = [];
-        //     for (let i = 0; i < results.length; i++) {
-        //     lastArray.push(results[i].last_name);
-        //     }
-        //     return lastArray;
-        //   },         
-        //   message: "What is the employee's last_name",
-        // },
         {
           name: "new_role",
           type: "input",
@@ -235,9 +223,39 @@ const updateEmployee = () => {
             if (error) throw err;
             console.log("Employee updated succesfully");
           });
-          viewAll();
+        startApplication();
       });
   });
 };
 
+const removeEmployee = () => {
+  connection.query("SELECT * FROM employee;", function (err, results) {
+    inquirer
+      .prompt([
+        {
+          name: "id",
+          type: "input",
+          message: "Enter the employee id of the employee you would like to remove."
+          //   choices: function () {
+          //     let employeeId = [];
+          //     for (let i = 0; i < results.length; i++) {
+          //       employeeId.push(results[i].id);
+          //     }
+          //     return employeeId;
+          //   }
+        },
+      ]).then(function (answer) {
+        // let chosenEmployee;
+        // for (let i = 0; i < results.length; i++) {
+        //   if (results[i].id === answer.id) {
+        //     chosenEmployee = results[i];
+        //   }
+        // }
+        connection.query("DELETE FROM employee WHERE id=?", [answer.id], function (err, res) {
+          console.log(res);
+          //     console.table(res)
+        });
+      });
+  });
+};
 
