@@ -133,11 +133,6 @@ const addEmployee = () => {
         message: "What is the employee's role id?"
       },
       {
-        name: "department",
-        type: "list",
-        message: "What is the employee's department id"
-      },
-      {
         name: "manager",
         type: "input",
         message: "Who is the employee's manager"
@@ -156,7 +151,6 @@ const addEmployee = () => {
           title: answer.title,
           salary: answer.salary,
           department_id: answer.department
-
         },
       );
       connection.query(
