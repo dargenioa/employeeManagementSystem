@@ -52,7 +52,7 @@ VALUES("Professional Services");
 SELECT * FROM role;
 
 INSERT INTO role(title, salary, department_id)
-VALUES("Chief Technology Officer", 243425 , 01);
+VALUES("Chief Technology Officer", 314000 , 01);
 
 INSERT INTO role(title, salary, department_id)
 VALUES("Director of Engineering", 220000 , 01);
@@ -128,8 +128,8 @@ VALUES("VP, Professional Services", 185000 , 06);
 
 SELECT * FROM employee;
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Amanda", "D'Argenio", 01, "Kathy Clark");
+INSERT INTO employee(first_name, last_name, role_id)
+VALUES("Amanda", "D'Argenio", 01);
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Michelle", "Mybell", 02, "Amanda D'Argenio");
@@ -141,66 +141,66 @@ INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES("Justin", "Dujardin", 04, "Amanda D'Argenio");
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES("Desi", "DiMaio", 05);
+VALUES("Desi", "DiMaio", 05, "Amanda D'Argenio");
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Melissa", "DiBartolo", 06);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Leanne", "Morici", 07);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Catherine", "Marino", 08);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Ronnie", "Altshuler", 09);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Julie", "Alex", 10);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Marco", "Lozito", 11);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Kasia", "Kern", 12);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Joseph", "Kern", 13);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Dave", "Chappelle", 14);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Mike", "Tyson", 15);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Joe", "Rogan", 16);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Aziz", "Ansari", 17);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Sebastian", "Maniscalco", 18);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Bill", "Burr", 19);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Conan", "O'Brien", 20);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Nicole", "Kidman", 21);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("John", "Lithgow", 22);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Jamie", "Fox", 23);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Eddie", "Murphy", 24);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES("Charlie", "Murphy", 25);
 
 
