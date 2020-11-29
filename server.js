@@ -1,7 +1,9 @@
+// required node packages
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 
+// establishing mysql connection
 const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -16,6 +18,7 @@ connection.connect((err) => {
   startApplication();
 });
 
+// startApplication will display the main menu
 const startApplication = () => {
   inquirer
     .prompt({
@@ -73,6 +76,7 @@ const startApplication = () => {
     });
 };
 
+// view the table ordered by the employee's id
 const viewAll = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY employee.id";
   connection.query(query, function (err, res) {
@@ -81,6 +85,7 @@ const viewAll = () => {
   startApplication();
 }
 
+// view the table ordered by the employee's department
 const viewDeparment = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY department.name;";
   connection.query(query, function (err, res) {
@@ -89,6 +94,7 @@ const viewDeparment = () => {
   startApplication();
 }
 
+// view the table ordered by the employee's role
 const viewRole = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY role.title;";
   connection.query(query, function (err, res) {
@@ -97,6 +103,7 @@ const viewRole = () => {
   startApplication();
 }
 
+// view the table ordered by the employee's manager
 const viewManager = () => {
   let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, manager_id AS manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id ORDER BY employee.manager_id DESC;";
   connection.query(query, function (err, res) {
@@ -104,6 +111,8 @@ const viewManager = () => {
   });
   startApplication();
 }
+
+// add a new employee by entering their first name, last name, and role_id that is linked to the title, salary and department
 const addEmployee = () => {
   inquirer
     .prompt([
@@ -147,22 +156,23 @@ const addEmployee = () => {
     });
 };
 
+// update an employee by choosing their employee id from a list and entering the new role_id that is linked to the title, salary and department
 const updateEmployee = () => {
   connection.query("SELECT * FROM employee;", function (err, results) {
     inquirer
       .prompt([
         {
-          name: "first_name",
+          name: "id",
           type: "list",
           choices: function () {
             let firstArray = [];
             for (let i = 0; i < results.length; i++) {
-              firstArray.push(results[i].first_name);
+              firstArray.push(results[i].id);
             }
 
             return firstArray;
           },
-          message: "What is the employee's first name?",
+          message: "What is the employee's id?",
         },
         {
           name: "new_role",
@@ -172,7 +182,7 @@ const updateEmployee = () => {
       ]).then(function (answer) {
         let chosenEmployee;
         for (let i = 0; i < results.length; i++) {
-          if (results[i].first_name === answer.first_name) {
+          if (results[i].id === answer.id) {
             chosenEmployee = results[i];
           }
         }
@@ -197,6 +207,7 @@ const updateEmployee = () => {
   });
 };
 
+// update the employee's manager by using their first name and inputting the manager's name
 const updateManager = () => {
   connection.query("SELECT * FROM employee;", function (err, results) {
     inquirer
@@ -247,6 +258,7 @@ const updateManager = () => {
   });
 };
 
+// remove an employee by selecting their employee id
 const removeEmployee = () => {
   connection.query("SELECT * FROM employee;", function (err, results) {
     inquirer
